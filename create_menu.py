@@ -44,6 +44,29 @@ class Recipe:
         ingredient_id = ingredient if isinstance(ingredient, IngredientId) else ingredient.id
         return any([i[1].id == ingredient_id for i in self.ingredients])
 
+    def macros_per_serving(self) -> MacroNutrients:
+        (
+            total_carbohydrate,
+            total_protein,
+            total_fat
+        ) = 0, 0, 0
+        for weight, ingredient in self.ingredients:
+            carbohydrates, proteins, fats = ingredient.macronutrients
+            total_carbohydrate += weight * carbohydrates
+            total_protein += weight * proteins
+            total_fat += weight * fats
+        return MacroNutrients(
+            total_carbohydrate / self.yield_,
+            total_protein / self.yield_,
+            total_fat / self.yield_
+        )
+
+    def kilocalories_per_serving(self) -> float:
+        total_kilocalories = sum(
+            w * i.kilocalories for w, i in self.ingredients
+        )
+        return total_kilocalories / self.yield_
+
 
 Menu: TypeAlias = list[Recipe]
 

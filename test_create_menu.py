@@ -28,6 +28,105 @@ class RecipeTestCase(unittest.TestCase):
     def test_recipe_contains_ingredient_id(self):
         self.assertTrue(test_recipe.contains(test_ingredient.id))
 
+    def test_recipe_macros_per_serving_empty(self):
+        macros = test_recipe.macros_per_serving()
+
+        self.assertEqual(macros.carbohydrates, 0)
+        self.assertEqual(macros.proteins, 0)
+        self.assertEqual(macros.fats, 0)
+
+    def test_recipe_macros_per_serving_multiplies_by_weight(self):
+        test_ingredient = Ingredient(
+            id="Test",
+            macronutrients=MacroNutrients(
+                carbohydrates=10,
+                proteins=10,
+                fats=10,
+            ),
+            kilocalories=0,
+        )
+        test_recipe = Recipe(
+            ingredients=[
+                (2, test_ingredient)
+            ],
+            yield_=1,
+        )
+
+        macros = test_recipe.macros_per_serving()
+
+        self.assertEqual(macros.carbohydrates, 20)
+        self.assertEqual(macros.proteins, 20)
+        self.assertEqual(macros.fats, 20)
+
+    def test_recipe_macros_per_serving_divides_by_yield(self):
+        test_ingredient = Ingredient(
+            id="Test",
+            macronutrients=MacroNutrients(
+                carbohydrates=10,
+                proteins=10,
+                fats=10,
+            ),
+            kilocalories=0,
+        )
+        test_recipe = Recipe(
+            ingredients=[
+                (1, test_ingredient)
+            ],
+            yield_=2,
+        )
+
+        macros = test_recipe.macros_per_serving()
+
+        self.assertEqual(macros.carbohydrates, 5)
+        self.assertEqual(macros.proteins, 5)
+        self.assertEqual(macros.fats, 5)
+
+    def test_recipe_kilocalories_per_serving_empty(self):
+        kilocalories = test_recipe.kilocalories_per_serving()
+
+        self.assertEqual(kilocalories, 0)
+
+    def test_recipe_kilocalories_per_serving_multiplies_by_weight(self):
+        test_ingredient = Ingredient(
+            id="Test",
+            macronutrients=MacroNutrients(
+                carbohydrates=0,
+                proteins=0,
+                fats=0,
+            ),
+            kilocalories=10,
+        )
+        test_recipe = Recipe(
+            ingredients=[
+                (2, test_ingredient)
+            ],
+            yield_=1,
+        )
+
+        kilocalories = test_recipe.kilocalories_per_serving()
+
+        self.assertEqual(kilocalories, 20)
+
+    def test_recipe_macros_per_serving_divides_by_yield(self):
+        test_ingredient = Ingredient(
+            id="Test",
+            macronutrients=MacroNutrients(
+                carbohydrates=0,
+                proteins=0,
+                fats=0,
+            ),
+            kilocalories=10,
+        )
+        test_recipe = Recipe(
+            ingredients=[
+                (1, test_ingredient)
+            ],
+            yield_=2,
+        )
+
+        kilocalories = test_recipe.kilocalories_per_serving()
+        self.assertEqual(kilocalories, 5)
+
 
 class BruteForceTestCase(unittest.TestCase):
     def test_invalid_size_raises_error(self):
