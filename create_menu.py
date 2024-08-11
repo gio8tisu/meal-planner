@@ -3,6 +3,9 @@ from typing import Callable, TypeAlias, Protocol
 from itertools import combinations_with_replacement
 
 
+IngredientId: TypeAlias = str
+
+
 @dataclass
 class Ingredient:
     """Holds information about ingredient.
@@ -15,7 +18,7 @@ class Ingredient:
     - fats: amount of fats per gram.
     - kilocalories: amount of kilocalories per gram.
     """
-    name: str
+    id: IngredientId
     carbohydrates: float
     proteins: float
     fats: float

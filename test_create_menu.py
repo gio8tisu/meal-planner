@@ -5,7 +5,7 @@ from create_menu import create_menu_brute_force, Ingredient, Recipe
 
 
 test_ingredient = Ingredient(
-    name="Test",
+    id="Test",
     carbohydrates=0,
     proteins=0,
     fats=0,
@@ -88,14 +88,14 @@ class BruteForceTestCase(unittest.TestCase):
 
     def test_ingredient_preferences(self):
         allowed_ingredient = Ingredient(
-            name="Allowed",
+            id="Allowed",
             carbohydrates=10,
             proteins=10,
             fats=10,
             kilocalories=10,
         )
         forbidden_ingredient = Ingredient(
-            name="Forbidden",
+            id="Forbidden",
             carbohydrates=10,
             proteins=10,
             fats=10,
