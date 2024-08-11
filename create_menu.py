@@ -82,7 +82,7 @@ class DietaryPreference(Protocol):
 
 
 def create_menu_brute_force(
-    recipes: Menu, preferences: Callable[[Menu], float], size: int
+    recipes: Menu, size: int, preferences: Callable[[Menu], float] | None = None
 ) -> Menu:
     """Returns list of meals from preferences.
 
@@ -99,4 +99,6 @@ def create_menu_brute_force(
     """
     if size < 1 or len(recipes) == 0:
         raise ValueError
+    if preferences is None:
+        preferences = lambda recipe: 0
     return min(combinations_with_replacement(recipes, size), key=preferences)

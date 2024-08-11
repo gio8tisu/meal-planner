@@ -131,34 +131,30 @@ class RecipeTestCase(unittest.TestCase):
 class BruteForceTestCase(unittest.TestCase):
     def test_invalid_size_raises_error(self):
         recipes = [test_recipe]
-        preferences = lambda menu: 0
         size = 0
 
-        self.assertRaises(ValueError, create_menu_brute_force, recipes, preferences, size)
+        self.assertRaises(ValueError, create_menu_brute_force, recipes, size)
 
     def test_empty_recipes_raises_error(self):
         recipes = []
-        preferences = lambda menu: 0
         size = 1
 
-        self.assertRaises(ValueError, create_menu_brute_force, recipes, preferences, size)
+        self.assertRaises(ValueError, create_menu_brute_force, recipes, size)
 
     def test_single_recipe_size_1(self):
         recipes = [test_recipe]
-        preferences = lambda menu: 0
         size = 1
 
-        menu = create_menu_brute_force(recipes, preferences, size)
+        menu = create_menu_brute_force(recipes, size)
 
         self.assertEqual(len(menu), 1)
         self.assertEqual(menu[0], test_recipe)
 
     def test_single_recipe_size_3(self):
         recipes = [test_recipe]
-        preferences = lambda menu: 0
         size = 3
 
-        menu = create_menu_brute_force(recipes, preferences, size)
+        menu = create_menu_brute_force(recipes, size)
 
         self.assertEqual(len(menu), 3)
         self.assertEqual(menu[0], test_recipe)
@@ -181,10 +177,9 @@ class BruteForceTestCase(unittest.TestCase):
                 yield_=1,
             ),
         ]
-        preferences = lambda menu: 0
         size = 3
 
-        menu = create_menu_brute_force(recipes, preferences, size)
+        menu = create_menu_brute_force(recipes, size)
 
         self.assertEqual(len(menu), 3)
         for recipe in menu:
@@ -228,7 +223,7 @@ class BruteForceTestCase(unittest.TestCase):
             ),
         ]
 
-        menu = create_menu_brute_force(recipes, forbid_ingredient, 1)
+        menu = create_menu_brute_force(recipes, 1, forbid_ingredient)
 
         self.assertEqual(len(menu), 1)
         self.assertTrue(menu[0] == recipes[1])
