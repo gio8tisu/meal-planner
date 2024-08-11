@@ -25,6 +25,9 @@ class RecipeTestCase(unittest.TestCase):
     def test_recipe_contains_ingredient(self):
         self.assertTrue(test_recipe.contains(test_ingredient))
 
+    def test_recipe_contains_ingredient_id(self):
+        self.assertTrue(test_recipe.contains(test_ingredient.id))
+
 
 class BruteForceTestCase(unittest.TestCase):
     def test_invalid_size_raises_error(self):

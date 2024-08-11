@@ -40,8 +40,9 @@ class Recipe:
     ingredients: list[tuple[float, Ingredient]]
     yield_: int
 
-    def contains(self, ingredient: Ingredient):
-        return any([i[1] == ingredient for i in self.ingredients])
+    def contains(self, ingredient: Ingredient | IngredientId) -> bool:
+        ingredient_id = ingredient if isinstance(ingredient, IngredientId) else ingredient.id
+        return any([i[1].id == ingredient_id for i in self.ingredients])
 
 
 Menu: TypeAlias = list[Recipe]
