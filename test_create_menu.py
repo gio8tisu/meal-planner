@@ -1,14 +1,16 @@
 import unittest
 from unittest import mock
 
-from create_menu import create_menu_brute_force, Ingredient, Recipe
+from create_menu import create_menu_brute_force, Ingredient, Recipe, MacroNutrients
 
 
 test_ingredient = Ingredient(
     id="Test",
-    carbohydrates=0,
-    proteins=0,
-    fats=0,
+    macronutrients=MacroNutrients(
+        carbohydrates=0,
+        proteins=0,
+        fats=0,
+    ),
     kilocalories=0,
 )
 test_recipe = Recipe(
@@ -20,7 +22,7 @@ test_recipe = Recipe(
 
 
 class RecipeTestCase(unittest.TestCase):
-    def test_recipe_contains(self):
+    def test_recipe_contains_ingredient(self):
         self.assertTrue(test_recipe.contains(test_ingredient))
 
 
@@ -89,16 +91,20 @@ class BruteForceTestCase(unittest.TestCase):
     def test_ingredient_preferences(self):
         allowed_ingredient = Ingredient(
             id="Allowed",
-            carbohydrates=10,
-            proteins=10,
-            fats=10,
+            macronutrients=MacroNutrients(
+                carbohydrates=10,
+                proteins=10,
+                fats=10,
+            ),
             kilocalories=10,
         )
         forbidden_ingredient = Ingredient(
             id="Forbidden",
-            carbohydrates=10,
-            proteins=10,
-            fats=10,
+            macronutrients=MacroNutrients(
+                carbohydrates=10,
+                proteins=10,
+                fats=10,
+            ),
             kilocalories=10,
         )
         def forbid_ingredient(menu):

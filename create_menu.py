@@ -1,6 +1,12 @@
 from dataclasses import dataclass
-from typing import Callable, TypeAlias, Protocol
+from typing import Callable, TypeAlias, Protocol, NamedTuple
 from itertools import combinations_with_replacement
+
+
+class MacroNutrients(NamedTuple):
+    carbohydrates: float
+    proteins: float
+    fats: float
 
 
 IngredientId: TypeAlias = str
@@ -13,15 +19,11 @@ class Ingredient:
     In this context we simply care about name, calories and macros.
 
     Properties:
-    - carbohydrates: amount of carbohydrates per gram.
-    - proteins: amount of proteins per gram.
-    - fats: amount of fats per gram.
+    - macronutrients: amount macronutrients per gram.
     - kilocalories: amount of kilocalories per gram.
     """
     id: IngredientId
-    carbohydrates: float
-    proteins: float
-    fats: float
+    macronutrients: MacroNutrients
     kilocalories: float
 
 
