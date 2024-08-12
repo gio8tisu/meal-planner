@@ -19,8 +19,8 @@ class Ingredient:
     In this context we simply care about name, calories and macros.
 
     Properties:
-    - macronutrients: amount macronutrients per gram.
-    - kilocalories: amount of kilocalories per gram.
+    - macronutrients: amount macronutrients per 100 gram.
+    - kilocalories: amount of kilocalories per 100 gram.
     """
 
     id: IngredientId
@@ -52,9 +52,9 @@ class Recipe:
         (total_carbohydrate, total_protein, total_fat) = 0, 0, 0
         for weight, ingredient in self.ingredients:
             carbohydrates, proteins, fats = ingredient.macronutrients
-            total_carbohydrate += weight * carbohydrates
-            total_protein += weight * proteins
-            total_fat += weight * fats
+            total_carbohydrate += weight * carbohydrates / 100
+            total_protein += weight * proteins / 100
+            total_fat += weight * fats / 100
         return MacroNutrients(
             total_carbohydrate / self.yield_,
             total_protein / self.yield_,
@@ -62,7 +62,7 @@ class Recipe:
         )
 
     def kilocalories_per_serving(self) -> float:
-        total_kilocalories = sum(w * i.kilocalories for w, i in self.ingredients)
+        total_kilocalories = sum(w * i.kilocalories / 100 for w, i in self.ingredients)
         return total_kilocalories / self.yield_
 
 

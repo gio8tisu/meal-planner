@@ -13,38 +13,38 @@ from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPrefer
 bread = Ingredient(
     id="bread",
     macronutrients=MacroNutrients(
-        carbohydrates=2,
-        proteins=1,
-        fats=0.5,
+        carbohydrates=200,
+        proteins=100,
+        fats=50,
     ),
-    kilocalories=1,
+    kilocalories=100,
 )
 chicken = Ingredient(
     id="chicken",
     macronutrients=MacroNutrients(
         carbohydrates=0,
-        proteins=1,
-        fats=0.1,
+        proteins=100,
+        fats=10,
     ),
-    kilocalories=1.5,
+    kilocalories=150,
 )
 lettuce = Ingredient(
     id="lettuce",
     macronutrients=MacroNutrients(
-        carbohydrates=0.1,
-        proteins=0.2,
+        carbohydrates=10,
+        proteins=20,
         fats=0,
     ),
-    kilocalories=0.1,
+    kilocalories=10,
 )
 ground_beef = Ingredient(
     id="ground_beef",
     macronutrients=MacroNutrients(
         carbohydrates=0,
-        proteins=1,
-        fats=1,
+        proteins=100,
+        fats=100,
     ),
-    kilocalories=3,
+    kilocalories=300,
 )
 
 salad_recipe = Recipe(

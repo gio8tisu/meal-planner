@@ -36,6 +36,7 @@ class RecipeTestCase(unittest.TestCase):
         test_ingredient = Ingredient(
             id="Test",
             macronutrients=MacroNutrients(
+                # Ingredient nutrients are defined per 100 grams.
                 carbohydrates=10,
                 proteins=10,
                 fats=10,
@@ -43,7 +44,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
-            ingredients=[(2, test_ingredient)],
+            ingredients=[(200, test_ingredient)],
             yield_=1,
         )
 
@@ -64,7 +65,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
-            ingredients=[(1, test_ingredient)],
+            ingredients=[(100, test_ingredient)],
             yield_=2,
         )
 
@@ -80,6 +81,7 @@ class RecipeTestCase(unittest.TestCase):
         self.assertEqual(kilocalories, 0)
 
     def test_recipe_kilocalories_per_serving_multiplies_by_weight(self):
+        # Ingredient Kilocalories are defined per 100 grams.
         test_ingredient = Ingredient(
             id="Test",
             macronutrients=MacroNutrients(
@@ -90,7 +92,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
-            ingredients=[(2, test_ingredient)],
+            ingredients=[(200, test_ingredient)],
             yield_=1,
         )
 
@@ -109,7 +111,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
-            ingredients=[(1, test_ingredient)],
+            ingredients=[(100, test_ingredient)],
             yield_=2,
         )
 

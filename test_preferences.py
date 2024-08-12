@@ -50,7 +50,7 @@ class MacroPreferencesTestCase(unittest.TestCase):
         # We are `target_carbs` short, that's the cost.
         self.assertEqual(cost, target_carbs)
 
-    def test_higer_carbs(self):
+    def test_higher_carbs(self):
         target_carbs = 30
         bread = Ingredient(
             id="bread",
@@ -62,7 +62,7 @@ class MacroPreferencesTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
-            ingredients=[(1, bread)],
+            ingredients=[(100, bread)],
             yield_=1,
         )
         menu = [test_recipe]
@@ -95,11 +95,11 @@ class MacroPreferencesTestCase(unittest.TestCase):
             kilocalories=0,
         )
         bread_recipe = Recipe(
-            ingredients=[(1, bread)],
+            ingredients=[(100, bread)],
             yield_=1,
         )
         chicken_recipe = Recipe(
-            ingredients=[(1, chicken)],
+            ingredients=[(100, chicken)],
             yield_=1,
         )
         menu = [bread_recipe, chicken_recipe]
@@ -122,7 +122,7 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
         # We are `target` short, that's the cost.
         self.assertEqual(cost, target)
 
-    def test_higer_carbs(self):
+    def test_higher_carbs(self):
         target = 30
         bread = Ingredient(
             id="bread",
@@ -134,7 +134,7 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
             kilocalories=100,
         )
         test_recipe = Recipe(
-            ingredients=[(1, bread)],
+            ingredients=[(100, bread)],
             yield_=1,
         )
         menu = [test_recipe]
@@ -166,11 +166,11 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
             kilocalories=50,
         )
         bread_recipe = Recipe(
-            ingredients=[(1, bread)],
+            ingredients=[(100, bread)],
             yield_=1,
         )
         chicken_recipe = Recipe(
-            ingredients=[(1, chicken)],
+            ingredients=[(100, chicken)],
             yield_=1,
         )
         menu = [bread_recipe, chicken_recipe]
