@@ -14,9 +14,7 @@ test_ingredient = Ingredient(
     kilocalories=0,
 )
 test_recipe = Recipe(
-    ingredients=[
-        (1, test_ingredient)
-    ],
+    ingredients=[(1, test_ingredient)],
     yield_=1,
 )
 
@@ -64,9 +62,7 @@ class MacroPreferencesTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
-            ingredients=[
-                (1, bread)
-            ],
+            ingredients=[(1, bread)],
             yield_=1,
         )
         menu = [test_recipe]
@@ -99,15 +95,11 @@ class MacroPreferencesTestCase(unittest.TestCase):
             kilocalories=0,
         )
         bread_recipe = Recipe(
-            ingredients=[
-                (1, bread)
-            ],
+            ingredients=[(1, bread)],
             yield_=1,
         )
         chicken_recipe = Recipe(
-            ingredients=[
-                (1, chicken)
-            ],
+            ingredients=[(1, chicken)],
             yield_=1,
         )
         menu = [bread_recipe, chicken_recipe]
@@ -142,9 +134,7 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
             kilocalories=100,
         )
         test_recipe = Recipe(
-            ingredients=[
-                (1, bread)
-            ],
+            ingredients=[(1, bread)],
             yield_=1,
         )
         menu = [test_recipe]
@@ -176,15 +166,11 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
             kilocalories=50,
         )
         bread_recipe = Recipe(
-            ingredients=[
-                (1, bread)
-            ],
+            ingredients=[(1, bread)],
             yield_=1,
         )
         chicken_recipe = Recipe(
-            ingredients=[
-                (1, chicken)
-            ],
+            ingredients=[(1, chicken)],
             yield_=1,
         )
         menu = [bread_recipe, chicken_recipe]

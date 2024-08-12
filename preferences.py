@@ -25,17 +25,9 @@ class MacroPreferences:
         self.fats = fats
 
     def __call__(self, menu: Menu) -> float:
-        (
-            total_carbohydrates,
-            total_proteins,
-            total_fats
-        ) = 0, 0, 0
+        (total_carbohydrates, total_proteins, total_fats) = 0, 0, 0
         for recipe in menu:
-            (
-                carbohydrates,
-                proteins,
-                fats
-            ) = recipe.macros_per_serving()
+            (carbohydrates, proteins, fats) = recipe.macros_per_serving()
             total_carbohydrates += carbohydrates
             total_proteins += proteins
             total_fats += fats
@@ -53,7 +45,5 @@ class KilocaloriesPreferences:
         self.kilocalories = kilocalories
 
     def __call__(self, menu: Menu) -> float:
-        total_kilocalories = sum(
-            recipe.kilocalories_per_serving() for recipe in menu
-        )
+        total_kilocalories = sum(recipe.kilocalories_per_serving() for recipe in menu)
         return abs(self.kilocalories - total_kilocalories)

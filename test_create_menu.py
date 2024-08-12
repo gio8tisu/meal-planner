@@ -1,5 +1,4 @@
 import unittest
-from unittest import mock
 
 from create_menu import create_menu_brute_force, Ingredient, Recipe, MacroNutrients
 
@@ -14,9 +13,7 @@ test_ingredient = Ingredient(
     kilocalories=0,
 )
 test_recipe = Recipe(
-    ingredients=[
-        (1, test_ingredient)
-    ],
+    ingredients=[(1, test_ingredient)],
     yield_=1,
 )
 
@@ -46,9 +43,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
-            ingredients=[
-                (2, test_ingredient)
-            ],
+            ingredients=[(2, test_ingredient)],
             yield_=1,
         )
 
@@ -69,9 +64,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
-            ingredients=[
-                (1, test_ingredient)
-            ],
+            ingredients=[(1, test_ingredient)],
             yield_=2,
         )
 
@@ -97,9 +90,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
-            ingredients=[
-                (2, test_ingredient)
-            ],
+            ingredients=[(2, test_ingredient)],
             yield_=1,
         )
 
@@ -107,7 +98,7 @@ class RecipeTestCase(unittest.TestCase):
 
         self.assertEqual(kilocalories, 20)
 
-    def test_recipe_macros_per_serving_divides_by_yield(self):
+    def test_recipe_kilocalories_per_serving_divides_by_yield(self):
         test_ingredient = Ingredient(
             id="Test",
             macronutrients=MacroNutrients(
@@ -118,9 +109,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
-            ingredients=[
-                (1, test_ingredient)
-            ],
+            ingredients=[(1, test_ingredient)],
             yield_=2,
         )
 
@@ -164,9 +153,7 @@ class BruteForceTestCase(unittest.TestCase):
     def test_2_recipes_size_3(self):
         recipes = [
             Recipe(
-                ingredients=[
-                    (1, test_ingredient)
-                ],
+                ingredients=[(1, test_ingredient)],
                 yield_=1,
             ),
             Recipe(
@@ -204,11 +191,13 @@ class BruteForceTestCase(unittest.TestCase):
             ),
             kilocalories=10,
         )
+
         def forbid_ingredient(menu):
             for recipe in menu:
                 if recipe.contains(forbidden_ingredient):
                     return float("inf")
             return 0
+
         # Having forbidden recipe first, forces it to be checked first.
         recipes = [
             # Forbidden.

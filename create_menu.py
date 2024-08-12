@@ -22,6 +22,7 @@ class Ingredient:
     - macronutrients: amount macronutrients per gram.
     - kilocalories: amount of kilocalories per gram.
     """
+
     id: IngredientId
     macronutrients: MacroNutrients
     kilocalories: float
@@ -37,19 +38,18 @@ class Recipe:
     - ingredients: list of (quantity, ingredient) tuples the recipe calls for.
     - yields_: number servings the recipe provides.
     """
+
     ingredients: list[tuple[float, Ingredient]]
     yield_: int
 
     def contains(self, ingredient: Ingredient | IngredientId) -> bool:
-        ingredient_id = ingredient if isinstance(ingredient, IngredientId) else ingredient.id
+        ingredient_id = (
+            ingredient if isinstance(ingredient, IngredientId) else ingredient.id
+        )
         return any([i[1].id == ingredient_id for i in self.ingredients])
 
     def macros_per_serving(self) -> MacroNutrients:
-        (
-            total_carbohydrate,
-            total_protein,
-            total_fat
-        ) = 0, 0, 0
+        (total_carbohydrate, total_protein, total_fat) = 0, 0, 0
         for weight, ingredient in self.ingredients:
             carbohydrates, proteins, fats = ingredient.macronutrients
             total_carbohydrate += weight * carbohydrates
@@ -58,13 +58,11 @@ class Recipe:
         return MacroNutrients(
             total_carbohydrate / self.yield_,
             total_protein / self.yield_,
-            total_fat / self.yield_
+            total_fat / self.yield_,
         )
 
     def kilocalories_per_serving(self) -> float:
-        total_kilocalories = sum(
-            w * i.kilocalories for w, i in self.ingredients
-        )
+        total_kilocalories = sum(w * i.kilocalories for w, i in self.ingredients)
         return total_kilocalories / self.yield_
 
 
@@ -77,8 +75,8 @@ class DietaryPreference(Protocol):
     It's basically a "cost" function: return high number to restrict a given
     menu candidate.
     """
-    def __call__(self, menu: Menu) -> float:
-        ...
+
+    def __call__(self, menu: Menu) -> float: ...
 
 
 def create_menu_brute_force(
@@ -99,6 +97,7 @@ def create_menu_brute_force(
     """
     if size < 1 or len(recipes) == 0:
         raise ValueError
-    if preferences is None:
-        preferences = lambda recipe: 0
-    return min(combinations_with_replacement(recipes, size), key=preferences)
+    return min(
+        combinations_with_replacement(recipes, size),
+        key=preferences or (lambda recipe: 0),
+    )
