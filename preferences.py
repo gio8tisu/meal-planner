@@ -25,7 +25,7 @@ class MacroPreferences:
         self.fats = fats
 
     def __call__(self, menu: Menu) -> float:
-        (total_carbohydrates, total_proteins, total_fats) = 0, 0, 0
+        (total_carbohydrates, total_proteins, total_fats) = 0.0, 0.0, 0.0
         for recipe in menu:
             (carbohydrates, proteins, fats) = recipe.macros_per_serving()
             total_carbohydrates += carbohydrates

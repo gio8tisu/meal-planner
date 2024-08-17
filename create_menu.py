@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, TypeAlias, Protocol, NamedTuple
+from typing import TypeAlias, Protocol, NamedTuple, Iterable
 from itertools import combinations_with_replacement
 
 
@@ -49,7 +49,7 @@ class Recipe:
         return any([i[1].id == ingredient_id for i in self.ingredients])
 
     def macros_per_serving(self) -> MacroNutrients:
-        (total_carbohydrate, total_protein, total_fat) = 0, 0, 0
+        (total_carbohydrate, total_protein, total_fat) = 0.0, 0.0, 0.0
         for weight, ingredient in self.ingredients:
             carbohydrates, proteins, fats = ingredient.macronutrients
             total_carbohydrate += weight * carbohydrates / 100
@@ -66,7 +66,8 @@ class Recipe:
         return total_kilocalories / self.yield_
 
 
-Menu: TypeAlias = list[Recipe]
+class Menu(list[Recipe]):
+    pass
 
 
 class DietaryPreference(Protocol):
@@ -76,11 +77,11 @@ class DietaryPreference(Protocol):
     menu candidate.
     """
 
-    def __call__(self, menu: Menu) -> float: ...
+    def __call__(self, recipes: Iterable[Recipe]) -> float: ...
 
 
 def create_menu_brute_force(
-    recipes: Menu, size: int, preferences: Callable[[Menu], float] | None = None
+    recipes: Menu, size: int, preferences: DietaryPreference | None = None
 ) -> Menu:
     """Returns list of meals from preferences.
 
@@ -97,7 +98,9 @@ def create_menu_brute_force(
     """
     if size < 1 or len(recipes) == 0:
         raise ValueError
-    return min(
-        combinations_with_replacement(recipes, size),
-        key=preferences or (lambda recipe: 0),
+    return Menu(
+        min(
+            combinations_with_replacement(recipes, size),
+            key=preferences or (lambda recipe: 0),
+        )
     )
