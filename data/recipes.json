@@ -1,0 +1,56 @@
+[
+    {
+        "name": "tepid",
+        "ingredients": [
+            [
+                125,
+                {
+                    "id": "Tomatoes, grape, raw",
+                    "macronutrients": {
+                        "carbohydrates": 5.51,
+                        "proteins": 0.83,
+                        "fats": 0.63
+                    },
+                    "kilocalories": 27
+                }
+            ],
+            [
+                100,
+                {
+                    "id": "Cheese, feta, whole milk, crumbled",
+                    "macronutrients": {
+                        "carbohydrates": 5.58,
+                        "proteins": 19.7,
+                        "fats": 19.1
+                    },
+                    "kilocalories": 400
+                }
+            ],
+            [
+                150,
+                {
+                    "id": "Onions, red, raw",
+                    "macronutrients": {
+                        "carbohydrates": 9.93,
+                        "proteins": 0.94,
+                        "fats": 0.1
+                    },
+                    "kilocalories": 44
+                }
+            ],
+            [
+                200,
+                {
+                    "id": "Sweet potatoes, orange flesh, without skin, raw",
+                    "macronutrients": {
+                        "carbohydrates": 17.3,
+                        "proteins": 1.58,
+                        "fats": 0.375
+                    },
+                    "kilocalories": 100
+                }
+            ]
+        ],
+        "yield": 2
+    }
+]
