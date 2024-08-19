@@ -1,7 +1,7 @@
 import unittest
 
 from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPreferences
-from create_menu import Ingredient, IngredientId, Recipe, MacroNutrients
+from create_menu import Ingredient, IngredientId, Recipe, RecipeId, MacroNutrients
 
 
 test_ingredient = Ingredient(
@@ -14,6 +14,7 @@ test_ingredient = Ingredient(
     kilocalories=0,
 )
 test_recipe = Recipe(
+    id=RecipeId("12345678123456781234567812345678"),
     name="test",
     ingredients=[(1, test_ingredient)],
     yield_=1,
@@ -63,6 +64,7 @@ class MacroPreferencesTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="test",
             ingredients=[(100, bread)],
             yield_=1,
@@ -97,11 +99,13 @@ class MacroPreferencesTestCase(unittest.TestCase):
             kilocalories=0,
         )
         bread_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="test",
             ingredients=[(100, bread)],
             yield_=1,
         )
         chicken_recipe = Recipe(
+            id=RecipeId("23456781234567812345678123456781"),
             name="test",
             ingredients=[(100, chicken)],
             yield_=1,
@@ -138,6 +142,7 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
             kilocalories=100,
         )
         test_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="test",
             ingredients=[(100, bread)],
             yield_=1,
@@ -171,11 +176,13 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
             kilocalories=50,
         )
         bread_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="bread",
             ingredients=[(100, bread)],
             yield_=1,
         )
         chicken_recipe = Recipe(
+            id=RecipeId("23456781234567812345678123456781"),
             name="chicken",
             ingredients=[(100, chicken)],
             yield_=1,

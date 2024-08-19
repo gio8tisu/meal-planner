@@ -5,6 +5,7 @@ from create_menu import (
     Ingredient,
     IngredientId,
     Recipe,
+    RecipeId,
     MacroNutrients,
 )
 from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPreferences
@@ -48,6 +49,7 @@ ground_beef = Ingredient(
 )
 
 salad_recipe = Recipe(
+    id=RecipeId("12345678123456781234567812345678"),
     name="Chicken salad",
     ingredients=[
         (100, lettuce),
@@ -57,6 +59,7 @@ salad_recipe = Recipe(
     yield_=2,
 )
 chicken_sandwich_recipe = Recipe(
+    id=RecipeId("23456781234567812345678123456781"),
     name="Chicken sandwich",
     ingredients=[
         (30, lettuce),
@@ -66,6 +69,7 @@ chicken_sandwich_recipe = Recipe(
     yield_=1,
 )
 hamburger_recipe = Recipe(
+    id=RecipeId("34567812345678123456781234567812"),
     name="Burger",
     ingredients=[
         (30, lettuce),

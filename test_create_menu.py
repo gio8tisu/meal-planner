@@ -1,6 +1,6 @@
 import unittest
 
-from create_menu import create_menu_brute_force, Ingredient, Recipe, MacroNutrients
+from create_menu import create_menu_brute_force, Ingredient, Recipe, RecipeId, MacroNutrients
 
 
 test_ingredient = Ingredient(
@@ -12,7 +12,9 @@ test_ingredient = Ingredient(
     ),
     kilocalories=0,
 )
+
 test_recipe = Recipe(
+    id=RecipeId("12345678123456781234567812345678"),
     name="test",
     ingredients=[(1, test_ingredient)],
     yield_=1,
@@ -45,6 +47,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="test",
             ingredients=[(200, test_ingredient)],
             yield_=1,
@@ -67,6 +70,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="test",
             ingredients=[(100, test_ingredient)],
             yield_=2,
@@ -95,6 +99,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="test",
             ingredients=[(200, test_ingredient)],
             yield_=1,
@@ -115,6 +120,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
+            id=RecipeId("12345678123456781234567812345678"),
             name="test",
             ingredients=[(100, test_ingredient)],
             yield_=2,
@@ -160,11 +166,13 @@ class BruteForceTestCase(unittest.TestCase):
     def test_2_recipes_size_3(self):
         recipes = [
             Recipe(
+                id=RecipeId("12345678123456781234567812345678"),
                 name="test",
                 ingredients=[(1, test_ingredient)],
                 yield_=1,
             ),
             Recipe(
+                id=RecipeId("23456781234567812345678123456781"),
                 name="test",
                 ingredients=[
                     (1, test_ingredient),
@@ -211,12 +219,14 @@ class BruteForceTestCase(unittest.TestCase):
         recipes = [
             # Forbidden.
             Recipe(
+                id=RecipeId("12345678123456781234567812345678"),
                 name="forbidden recipe",
                 ingredients=[(1, forbidden_ingredient)],
                 yield_=1,
             ),
             # Allowed.
             Recipe(
+                id=RecipeId("23456781234567812345678123456781"),
                 name="allowed recipe",
                 ingredients=[(1, allowed_ingredient)],
                 yield_=1,

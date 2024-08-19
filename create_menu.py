@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import TypeAlias, Protocol, NamedTuple, Iterable
 from itertools import combinations_with_replacement
+from uuid import UUID
 
 
 class MacroNutrients(NamedTuple):
@@ -28,6 +29,9 @@ class Ingredient:
     kilocalories: float
 
 
+RecipeId: TypeAlias = UUID
+
+
 @dataclass
 class Recipe:
     """Holds information about recipe.
@@ -39,6 +43,7 @@ class Recipe:
     - yields_: number servings the recipe provides.
     """
 
+    id: RecipeId
     name: str
     ingredients: list[tuple[float, Ingredient]]
     yield_: int
