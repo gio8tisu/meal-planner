@@ -1,7 +1,18 @@
 from unittest import TestCase, mock
 
-from create_recipes import IngredientNotFound, IngredientRepository, Recipe, RecipeRepository, CreateRecipeUseCase, RecipeDTO, Ingredient
+from create_recipes import RecipeNotFound, IngredientNotFound, IngredientRepository, Recipe, RecipeRepository, CreateRecipeUseCase, GetRecipeUseCase, RecipeDTO, Ingredient
 
+
+class TestGetRecipeUseCase(TestCase):
+    def test_non_existing_recipe_id(self):
+        mock_recipe_repo = mock.create_autospec(RecipeRepository)
+        mock_recipe_repo.find.return_value = None
+
+        use_case = GetRecipeUseCase(mock_recipe_repo)
+        self.assertRaises(RecipeNotFound, use_case, "34516e5e-2d08-43a8-a640-3c8bede481fb")
+
+    def test_happy_path(self):
+        pass
 
 class TestCreateRecipeUseCase(TestCase):
     def test_happy_path(self):

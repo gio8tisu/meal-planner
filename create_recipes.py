@@ -17,9 +17,17 @@ class IngredientRepository(Protocol):
 
 
 class RecipeRepository(Protocol):
-    def find(self, recipe_id: RecipeId) -> Recipe: ...
+    def find(self, recipe_id: RecipeId) -> Recipe | None: ...
 
     def add(self, recipe: Recipe): ...
+
+
+class IngredientNotFound(Exception):
+    pass
+
+
+class RecipeNotFound(Exception):
+    pass
 
 
 class GetRecipeUseCase:
@@ -27,11 +35,10 @@ class GetRecipeUseCase:
         self.recipe_repository = recipe_repository
 
     def __call__(self, recipe_id: RecipeId) -> Recipe:
-        return self.recipe_repository.find(recipe_id)
-
-
-class IngredientNotFound(Exception):
-    pass
+        recipe = self.recipe_repository.find(recipe_id)
+        if recipe is None:
+            raise RecipeNotFound()
+        return recipe
 
 
 class CreateRecipeUseCase:
