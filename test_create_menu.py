@@ -13,6 +13,7 @@ test_ingredient = Ingredient(
     kilocalories=0,
 )
 test_recipe = Recipe(
+    name="test",
     ingredients=[(1, test_ingredient)],
     yield_=1,
 )
@@ -44,6 +45,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
+            name="test",
             ingredients=[(200, test_ingredient)],
             yield_=1,
         )
@@ -65,6 +67,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=0,
         )
         test_recipe = Recipe(
+            name="test",
             ingredients=[(100, test_ingredient)],
             yield_=2,
         )
@@ -92,6 +95,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
+            name="test",
             ingredients=[(200, test_ingredient)],
             yield_=1,
         )
@@ -111,6 +115,7 @@ class RecipeTestCase(unittest.TestCase):
             kilocalories=10,
         )
         test_recipe = Recipe(
+            name="test",
             ingredients=[(100, test_ingredient)],
             yield_=2,
         )
@@ -155,10 +160,12 @@ class BruteForceTestCase(unittest.TestCase):
     def test_2_recipes_size_3(self):
         recipes = [
             Recipe(
+                name="test",
                 ingredients=[(1, test_ingredient)],
                 yield_=1,
             ),
             Recipe(
+                name="test",
                 ingredients=[
                     (1, test_ingredient),
                     (2, test_ingredient),
@@ -204,11 +211,13 @@ class BruteForceTestCase(unittest.TestCase):
         recipes = [
             # Forbidden.
             Recipe(
+                name="forbidden recipe",
                 ingredients=[(1, forbidden_ingredient)],
                 yield_=1,
             ),
             # Allowed.
             Recipe(
+                name="allowed recipe",
                 ingredients=[(1, allowed_ingredient)],
                 yield_=1,
             ),

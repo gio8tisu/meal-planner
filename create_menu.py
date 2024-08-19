@@ -39,6 +39,7 @@ class Recipe:
     - yields_: number servings the recipe provides.
     """
 
+    name: str
     ingredients: list[tuple[float, Ingredient]]
     yield_: int
 

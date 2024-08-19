@@ -48,6 +48,7 @@ ground_beef = Ingredient(
 )
 
 salad_recipe = Recipe(
+    name="Chicken salad",
     ingredients=[
         (100, lettuce),
         (10, bread),
@@ -56,6 +57,7 @@ salad_recipe = Recipe(
     yield_=2,
 )
 chicken_sandwich_recipe = Recipe(
+    name="Chicken sandwich",
     ingredients=[
         (30, lettuce),
         (70, bread),
@@ -64,6 +66,7 @@ chicken_sandwich_recipe = Recipe(
     yield_=1,
 )
 hamburger_recipe = Recipe(
+    name="Burger",
     ingredients=[
         (30, lettuce),
         (100, bread),
