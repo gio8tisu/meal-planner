@@ -8,7 +8,9 @@ from create_menu import (
     RecipeId,
     MacroNutrients,
 )
+from create_recipes import GetRecipeUseCase, CreateRecipeUseCase, RecipeDTO
 from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPreferences
+from repositories import InMemoryIngredientRepository, InMemoryRecipeRepository
 
 
 bread = Ingredient(
@@ -80,7 +82,7 @@ hamburger_recipe = Recipe(
 )
 
 
-class TestIntegration(unittest.TestCase):
+class TestCreateMenuIntegration(unittest.TestCase):
     def test_create_menu_no_preferences(self):
         create_menu_brute_force(
             [salad_recipe, chicken_sandwich_recipe, hamburger_recipe], 7
@@ -114,3 +116,38 @@ class TestIntegration(unittest.TestCase):
 
         self.assertIn(chicken_sandwich_recipe, menu)
         self.assertNotIn(hamburger_recipe, menu)
+
+
+class TestGetRecipeUseCaseE2E(unittest.TestCase):
+    def setUp(self):
+        self.get_recipe = GetRecipeUseCase(
+            InMemoryRecipeRepository.from_file("data/recipes.json")
+        )
+
+    def test_user_journey(self):
+        recipe = self.get_recipe(RecipeId("430e1479-8ba7-44cd-86b6-f77ed081de09"))
+        self.assertEqual(recipe.name, "tepid salad")
+
+
+class TestCreateRecipeUseCaseE2E(unittest.TestCase):
+    def setUp(self):
+        repo = InMemoryRecipeRepository.from_file("data/recipes.json")
+        self.get_recipe = GetRecipeUseCase(repo)
+        self.create_recipe = CreateRecipeUseCase(
+            repo,
+            InMemoryIngredientRepository.from_file("data/ingredients.json")
+        ) 
+
+    def test_user_journey(self):
+        recipe = self.create_recipe(
+            RecipeDTO(
+                name="Salad",
+                ingredients=[
+                    (500, "Tomatoes, grape, raw"),
+                    (500, "Lettuce, cos or romaine, raw"),
+                ],
+                yield_=4,
+            )
+        )
+        created_recipe = self.get_recipe(recipe.id)
+        self.assertEqual(created_recipe.name, "Salad")
