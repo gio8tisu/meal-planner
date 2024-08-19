@@ -2,7 +2,16 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from create_recipes import IngredientId, Recipe, RecipeDTO, RecipeId, CreateRecipeUseCase, GetRecipeUseCase, RecipeNotFound, IngredientNotFound
+from create_recipes import (
+    IngredientId,
+    Recipe,
+    RecipeDTO,
+    RecipeId,
+    CreateRecipeUseCase,
+    GetRecipeUseCase,
+    RecipeNotFound,
+    IngredientNotFound,
+)
 from create_menu import MacroNutrients
 from repositories import InMemoryRecipeRepository, InMemoryIngredientRepository
 
@@ -43,7 +52,11 @@ async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/recipes/{recipe_id}", response_model=RecipeResponse, responses={404: {"model": Message}})
+@app.get(
+    "/recipes/{recipe_id}",
+    response_model=RecipeResponse,
+    responses={404: {"model": Message}},
+)
 async def get_recipe_endpoint(recipe_id: RecipeId):
     try:
         recipe = get_recipe(recipe_id)
@@ -52,7 +65,9 @@ async def get_recipe_endpoint(recipe_id: RecipeId):
         return JSONResponse(status_code=404, content={"message": "Recipe not found"})
 
 
-@app.post("/recipes", response_model=RecipeResponse, responses={404: {"model": Message}})
+@app.post(
+    "/recipes", response_model=RecipeResponse, responses={404: {"model": Message}}
+)
 async def create_recipe_endpoint(recipe_request: RecipeDTO):
     try:
         recipe = create_recipe(recipe_request)

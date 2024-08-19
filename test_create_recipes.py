@@ -1,6 +1,16 @@
 from unittest import TestCase, mock
 
-from create_recipes import RecipeNotFound, IngredientNotFound, IngredientRepository, Recipe, RecipeRepository, CreateRecipeUseCase, GetRecipeUseCase, RecipeDTO, Ingredient
+from create_recipes import (
+    RecipeNotFound,
+    IngredientNotFound,
+    IngredientRepository,
+    Recipe,
+    RecipeRepository,
+    CreateRecipeUseCase,
+    GetRecipeUseCase,
+    RecipeDTO,
+    Ingredient,
+)
 
 
 class TestGetRecipeUseCase(TestCase):
@@ -9,18 +19,19 @@ class TestGetRecipeUseCase(TestCase):
         mock_recipe_repo.find.return_value = None
 
         use_case = GetRecipeUseCase(mock_recipe_repo)
-        self.assertRaises(RecipeNotFound, use_case, "34516e5e-2d08-43a8-a640-3c8bede481fb")
+        self.assertRaises(
+            RecipeNotFound, use_case, "34516e5e-2d08-43a8-a640-3c8bede481fb"
+        )
 
     def test_happy_path(self):
         pass
+
 
 class TestCreateRecipeUseCase(TestCase):
     def test_happy_path(self):
         new_recipe = RecipeDTO(
             name="My super recipe",
-            ingredients=[
-                (100, "eggplant")
-            ],
+            ingredients=[(100, "eggplant")],
             yield_=2,
         )
         eggplant = Ingredient(
@@ -50,9 +61,7 @@ class TestCreateRecipeUseCase(TestCase):
     def test_non_existing_ingredient_id(self):
         new_recipe = RecipeDTO(
             name="My super recipe",
-            ingredients=[
-                (100, "eggplant")
-            ],
+            ingredients=[(100, "eggplant")],
             yield_=2,
         )
         mock_recipe_repo = mock.create_autospec(RecipeRepository)

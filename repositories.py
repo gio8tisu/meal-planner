@@ -22,19 +22,14 @@ def create_recipe(recipe_info: dict[str, Any]) -> Recipe:
         name=recipe_info["name"],
         yield_=recipe_info["yield"],
         ingredients=[
-            (i[0], create_ingredient(i[1]))
-            for i in recipe_info["ingredients"]
-        ]
+            (i[0], create_ingredient(i[1])) for i in recipe_info["ingredients"]
+        ],
     )
 
 
 class InMemoryIngredientRepository:
     def __init__(self, ingredients: list[dict[str, Any]]):
-        self.ingredients = {
-            i["id"]:
-            create_ingredient(i)
-            for i in ingredients
-        }
+        self.ingredients = {i["id"]: create_ingredient(i) for i in ingredients}
 
     @staticmethod
     def from_file(path: str) -> "InMemoryIngredientRepository":
@@ -48,11 +43,7 @@ class InMemoryIngredientRepository:
 
 class InMemoryRecipeRepository:
     def __init__(self, recipes: list[dict[str, Any]]):
-        self.recipes = {
-            i["id"]:
-            create_recipe(i)
-            for i in recipes
-        }
+        self.recipes = {i["id"]: create_recipe(i) for i in recipes}
 
     @staticmethod
     def from_file(path: str) -> "InMemoryRecipeRepository":

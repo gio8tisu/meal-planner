@@ -134,9 +134,8 @@ class TestCreateRecipeUseCaseE2E(unittest.TestCase):
         repo = InMemoryRecipeRepository.from_file("data/recipes.json")
         self.get_recipe = GetRecipeUseCase(repo)
         self.create_recipe = CreateRecipeUseCase(
-            repo,
-            InMemoryIngredientRepository.from_file("data/ingredients.json")
-        ) 
+            repo, InMemoryIngredientRepository.from_file("data/ingredients.json")
+        )
 
     def test_user_journey(self):
         recipe = self.create_recipe(

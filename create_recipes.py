@@ -42,7 +42,11 @@ class GetRecipeUseCase:
 
 
 class CreateRecipeUseCase:
-    def __init__(self, recipe_repository: RecipeRepository, ingredient_repository: IngredientRepository):
+    def __init__(
+        self,
+        recipe_repository: RecipeRepository,
+        ingredient_repository: IngredientRepository,
+    ):
         self.recipe_repository = recipe_repository
         self.ingredient_repository = ingredient_repository
 

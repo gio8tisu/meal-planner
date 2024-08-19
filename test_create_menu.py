@@ -1,6 +1,12 @@
 import unittest
 
-from create_menu import create_menu_brute_force, Ingredient, Recipe, RecipeId, MacroNutrients
+from create_menu import (
+    create_menu_brute_force,
+    Ingredient,
+    Recipe,
+    RecipeId,
+    MacroNutrients,
+)
 
 
 test_ingredient = Ingredient(
