@@ -47,11 +47,6 @@ class RecipeResponse(BaseModel):
         )
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
 @app.get(
     "/recipes/{recipe_id}",
     response_model=RecipeResponse,
