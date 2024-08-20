@@ -81,6 +81,82 @@
 				"description": "Simple REST-like endpoint to create recipe."
 			},
 			"response": []
+		},
+		{
+			"name": "Create menu",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"size\": 3,\n    \"preferences\": [\n        {\n            \"type_\": \"kilocalories-preferences\",\n            \"parameters\": {\n                \"kilocalories\": 1500\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/menus",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"menus"
+					]
+				},
+				"description": "Simple REST-like endpoint to create recipe."
+			},
+			"response": []
+		},
+		{
+			"name": "Get menu by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/menus/:menu_id",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"menus",
+						":menu_id"
+					],
+					"variable": [
+						{
+							"key": "menu_id",
+							"value": ""
+						}
+					]
+				},
+				"description": "Simple REST-like endpoint to get recipe by id."
+			},
+			"response": []
 		}
 	],
 	"event": [
