@@ -1,6 +1,13 @@
 import unittest
 
-from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPreferences
+from preferences import (
+    RestrictIngredient,
+    MacroPreferences,
+    KilocaloriesPreferences,
+    DietaryPreferenceCombination,
+    create_preferences,
+    DietaryPreferenceDTO,
+)
 from create_menu import Recipe
 from create_recipes import Ingredient, IngredientId, RecipeId, MacroNutrients
 
@@ -195,3 +202,81 @@ class KilocaloriesPreferencesTestCase(unittest.TestCase):
 
         # We are 50 kcal over (from chicken).
         self.assertEqual(cost, 50)
+
+
+class PreferencesCombinationTestCase(unittest.TestCase):
+    def test_empty(self):
+        preference = DietaryPreferenceCombination([])
+        cost = preference([])
+
+        self.assertEqual(cost, 0)
+
+    def test_sums(self):
+        preference = DietaryPreferenceCombination(
+            [
+                lambda x: 1,
+                lambda x: 2,
+            ]
+        )
+        cost = preference([])
+
+        # Sum of 1 and 2.
+        self.assertEqual(cost, 3)
+
+
+class CreatePreferencesTestCase(unittest.TestCase):
+    def test_invalid_type(self):
+        preference = DietaryPreferenceDTO(
+            type_="invalid",
+            parameters={},
+        )
+        self.assertRaises(ValueError, create_preferences, [preference])
+
+    def test_restrict_ingredient_invalid_params(self):
+        preference = DietaryPreferenceDTO(
+            type_="restrict-ingredient",
+            parameters={"ingredient": 0},
+        )
+
+        self.assertRaises(TypeError, create_preferences, [preference])
+
+    def test_restrict_ingredient(self):
+        preference = DietaryPreferenceDTO(
+            type_="restrict-ingredient",
+            parameters={"ingredient_id": 0},
+        )
+
+        preferences = create_preferences([preference])
+
+        expected_preference = RestrictIngredient(ingredient_id=0)
+        self.assertEqual(preferences([]), expected_preference([]))
+
+    def test_macro_preferences(self):
+        preference = DietaryPreferenceDTO(
+            type_="macro-preferences",
+            parameters={
+                "carbohydrates": 0,
+                "proteins": 0,
+                "fats": 0,
+            },
+        )
+
+        preferences = create_preferences([preference])
+
+        expected_preference = MacroPreferences(
+            carbohydrates=0,
+            proteins=0,
+            fats=0,
+        )
+        self.assertEqual(preferences([]), expected_preference([]))
+
+    def test_kilocalories_preferences(self):
+        preference = DietaryPreferenceDTO(
+            type_="kilocalories-preferences",
+            parameters={"kilocalories": 0},
+        )
+
+        preferences = create_preferences([preference])
+
+        expected_preference = KilocaloriesPreferences(kilocalories=0)
+        self.assertEqual(preferences([]), expected_preference([]))

@@ -32,6 +32,7 @@ test_recipe = Recipe(
     yield_=1,
 )
 
+
 class RecipeTestCase(TestCase):
     def test_recipe_contains_ingredient(self):
         self.assertTrue(test_recipe.contains(test_ingredient))

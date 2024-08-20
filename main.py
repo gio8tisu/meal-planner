@@ -11,16 +11,33 @@ from create_recipes import (
     GetRecipeUseCase,
     RecipeNotFound,
     IngredientNotFound,
+    MacroNutrients,
 )
-from create_menu import MacroNutrients
-from repositories import InMemoryRecipeRepository, InMemoryIngredientRepository
+from create_menu import (
+    Menu,
+    MenuId,
+    GetMenuUseCase,
+    CreateMenuUseCase,
+    MenuNotFound,
+    CannotCreateMenu,
+    DietaryPreferenceDTO,
+    DietaryPreferenceNotValid,
+)
+from repositories import (
+    InMemoryRecipeRepository,
+    InMemoryMenuRepository,
+    InMemoryIngredientRepository,
+)
 
 app = FastAPI()
 
 recipe_repo = InMemoryRecipeRepository.from_file("data/recipes.json")
 ingredient_repo = InMemoryIngredientRepository.from_file("data/ingredients.json")
+menu_repo = InMemoryMenuRepository()
 get_recipe = GetRecipeUseCase(recipe_repo)
 create_recipe = CreateRecipeUseCase(recipe_repo, ingredient_repo)
+get_menu = GetMenuUseCase(menu_repo)
+create_menu = CreateMenuUseCase(recipe_repo, menu_repo)
 
 
 class Message(BaseModel):
@@ -47,6 +64,21 @@ class RecipeResponse(BaseModel):
         )
 
 
+class MenuResponse(BaseModel):
+    id: MenuId
+    meals: list[RecipeResponse]
+
+    @staticmethod
+    def from_menu(menu: Menu) -> "MenuResponse":
+        meals = [RecipeResponse.from_recipe(r) for r in menu.meals]
+        return MenuResponse(id=menu.id, meals=meals)
+
+
+class MenuRequest(BaseModel):
+    size: int = 7
+    preferences: list[DietaryPreferenceDTO] = []
+
+
 @app.get(
     "/recipes/{recipe_id}",
     response_model=RecipeResponse,
@@ -68,4 +100,33 @@ async def create_recipe_endpoint(recipe_request: RecipeDTO):
         recipe = create_recipe(recipe_request)
         return RecipeResponse.from_recipe(recipe)
     except IngredientNotFound:
-        return JSONResponse(status_code=404, content={"message": "Recipe not found"})
+        return JSONResponse(
+            status_code=404, content={"message": "Ingredient not found"}
+        )
+
+
+@app.get(
+    "/menus/{menu_id}",
+    response_model=MenuResponse,
+    responses={404: {"model": Message}},
+)
+async def get_menu_endpoint(menu_id: MenuId):
+    try:
+        menu = get_menu(menu_id)
+        return MenuResponse.from_menu(menu)
+    except MenuNotFound:
+        return JSONResponse(status_code=404, content={"message": "Menu not found"})
+
+
+@app.post("/menus", response_model=MenuResponse, responses={404: {"model": Message}})
+async def create_menu_endpoint(menu_request: MenuRequest):
+    try:
+        menu = create_menu(menu_request.size, menu_request.preferences)
+        return MenuResponse.from_menu(menu)
+    except DietaryPreferenceNotValid:
+        return JSONResponse(
+            status_code=400,
+            content={"message": "Provided dietary preference is not valid"},
+        )
+    except CannotCreateMenu:
+        return JSONResponse(status_code=500, content={"message": "Cannot create menu"})

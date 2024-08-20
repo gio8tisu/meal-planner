@@ -3,10 +3,25 @@ import unittest
 from create_menu import (
     select_recipes_brute_force,
     Recipe,
+    DietaryPreferenceDTO,
+    CreateMenuUseCase,
+    GetMenuUseCase,
 )
-from create_recipes import GetRecipeUseCase, CreateRecipeUseCase, RecipeDTO, RecipeId, MacroNutrients, Ingredient, IngredientId
+from create_recipes import (
+    GetRecipeUseCase,
+    CreateRecipeUseCase,
+    RecipeDTO,
+    RecipeId,
+    MacroNutrients,
+    Ingredient,
+    IngredientId,
+)
 from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPreferences
-from repositories import InMemoryIngredientRepository, InMemoryRecipeRepository
+from repositories import (
+    InMemoryIngredientRepository,
+    InMemoryRecipeRepository,
+    InMemoryMenuRepository,
+)
 
 
 bread = Ingredient(
@@ -146,3 +161,27 @@ class TestCreateRecipeUseCaseE2E(unittest.TestCase):
         )
         created_recipe = self.get_recipe(recipe.id)
         self.assertEqual(created_recipe.name, "Salad")
+
+
+class TestCreateMenuUseCaseE2E(unittest.TestCase):
+    def setUp(self):
+        recipe_repo = InMemoryRecipeRepository.from_file("data/recipes.json")
+        menu_repo = InMemoryMenuRepository()
+        self.create_menu = CreateMenuUseCase(recipe_repo, menu_repo)
+        self.get_menu = GetMenuUseCase(menu_repo)
+
+    def test_user_journey(self):
+        preferences = [
+            DietaryPreferenceDTO(
+                type_="restrict-ingredient",
+                parameters={
+                    "ingredient_id": IngredientId(0),
+                },
+            )
+        ]
+
+        menu = self.create_menu(2, preferences)
+        created_menu = self.get_menu(menu.id)
+
+        self.assertEqual(len(menu.meals), 2)
+        self.assertEqual(created_menu.id, menu.id)

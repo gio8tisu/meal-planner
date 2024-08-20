@@ -1,10 +1,16 @@
 import unittest
+from unittest import mock
 
 from create_menu import (
     select_recipes_brute_force,
+    CreateMenuUseCase,
+    DietaryPreferenceNotValid,
+    MenuRepository,
+    CannotCreateMenu,
 )
 from create_recipes import (
     Recipe,
+    RecipeRepository,
     Ingredient,
     RecipeId,
     MacroNutrients,
@@ -136,3 +142,35 @@ class BruteForceTestCase(unittest.TestCase):
 
         self.assertEqual(len(menu), 1)
         self.assertTrue(menu[0] == recipes[1])
+
+
+class TestCreateMenuUseCase(unittest.TestCase):
+    def test_no_recipes(self):
+        mock_recipe_repo = mock.create_autospec(RecipeRepository)
+        mock_menu_repo = mock.create_autospec(MenuRepository)
+        mock_recipe_repo.all.return_value = []
+
+        use_case = CreateMenuUseCase(mock_recipe_repo, mock_menu_repo)
+        with mock.patch("create_menu.create_preferences", return_value=[]):
+            self.assertRaises(CannotCreateMenu, use_case, 1, [])
+        mock_menu_repo.add.assert_not_called()
+
+    def test_preference_value_error(self):
+        mock_recipe_repo = mock.create_autospec(RecipeRepository)
+        mock_menu_repo = mock.create_autospec(MenuRepository)
+        mock_recipe_repo.all.return_value = []
+
+        use_case = CreateMenuUseCase(mock_recipe_repo, mock_menu_repo)
+        with mock.patch("create_menu.create_preferences", side_effect=ValueError):
+            self.assertRaises(DietaryPreferenceNotValid, use_case, 1, [])
+        mock_menu_repo.add.assert_not_called()
+
+    def test_preference_type_error(self):
+        mock_recipe_repo = mock.create_autospec(RecipeRepository)
+        mock_menu_repo = mock.create_autospec(MenuRepository)
+        mock_recipe_repo.all.return_value = []
+
+        use_case = CreateMenuUseCase(mock_recipe_repo, mock_menu_repo)
+        with mock.patch("create_menu.create_preferences", side_effect=TypeError):
+            self.assertRaises(DietaryPreferenceNotValid, use_case, 1, [])
+        mock_menu_repo.add.assert_not_called()

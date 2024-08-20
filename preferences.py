@@ -1,10 +1,20 @@
-from typing import Iterable
+from dataclasses import dataclass
+from typing import Any, Iterable, Protocol
 
-from create_menu import Recipe
-from create_recipes import IngredientId
+from create_recipes import IngredientId, Recipe
 
 
-class RestrictIngredient:
+class DietaryPreference(Protocol):
+    """Protocol used for dietary preferences.
+
+    It's basically a "cost" function: return high number to restrict a given
+    menu candidate.
+    """
+
+    def __call__(self, recipes: Iterable[Recipe]) -> float: ...
+
+
+class RestrictIngredient(DietaryPreference):
     ingredient_id: IngredientId
 
     def __init__(self, ingredient_id: IngredientId):
@@ -17,7 +27,7 @@ class RestrictIngredient:
         return 0
 
 
-class MacroPreferences:
+class MacroPreferences(DietaryPreference):
     carbohydrates: float
     proteins: float
     fats: float
@@ -41,12 +51,47 @@ class MacroPreferences:
         )
 
 
-class KilocaloriesPreferences:
+class KilocaloriesPreferences(DietaryPreference):
     kilocalories: float
 
     def __init__(self, kilocalories: float):
         self.kilocalories = kilocalories
 
     def __call__(self, recipes: Iterable[Recipe]) -> float:
-        total_kilocalories = sum(recipe.kilocalories_per_serving() for recipe in recipes)
+        total_kilocalories = sum(
+            recipe.kilocalories_per_serving() for recipe in recipes
+        )
         return abs(self.kilocalories - total_kilocalories)
+
+
+class DietaryPreferenceCombination(DietaryPreference):
+    preferences: list[DietaryPreference]
+
+    def __init__(self, preferences: list[DietaryPreference]):
+        self.preferences = preferences
+
+    def __call__(self, recipes: Iterable[Recipe]) -> float:
+        return sum(p(recipes) for p in self.preferences)
+
+
+@dataclass
+class DietaryPreferenceDTO:
+    type_: str
+    parameters: dict[str, Any]
+
+
+def create_preferences(
+    preferences: Iterable[DietaryPreferenceDTO],
+) -> DietaryPreferenceCombination:
+    preferences_: list[DietaryPreference] = []
+    for preference in preferences:
+        match preference.type_:
+            case "restrict-ingredient":
+                preferences_.append(RestrictIngredient(**preference.parameters))
+            case "macro-preferences":
+                preferences_.append(MacroPreferences(**preference.parameters))
+            case "kilocalories-preferences":
+                preferences_.append(KilocaloriesPreferences(**preference.parameters))
+            case _:
+                raise ValueError
+    return DietaryPreferenceCombination(preferences_)
