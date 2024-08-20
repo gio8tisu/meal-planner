@@ -1,8 +1,74 @@
 from dataclasses import dataclass
-from typing import Protocol
-from uuid import uuid4
+from typing import TypeAlias, Protocol, NamedTuple
+from uuid import UUID, uuid4
 
-from create_menu import Ingredient, IngredientId, Recipe, RecipeId
+
+class MacroNutrients(NamedTuple):
+    carbohydrates: float
+    proteins: float
+    fats: float
+
+
+IngredientId: TypeAlias = str
+
+
+@dataclass
+class Ingredient:
+    """Holds information about ingredient.
+
+    In this context we simply care about name, calories and macros.
+
+    Properties:
+    - macronutrients: amount macronutrients per 100 gram.
+    - kilocalories: amount of kilocalories per 100 gram.
+    """
+
+    id: IngredientId
+    macronutrients: MacroNutrients
+    kilocalories: float
+
+
+RecipeId: TypeAlias = UUID
+
+
+@dataclass
+class Recipe:
+    """Holds information about recipe.
+
+    In this context we simply care about list of ingredients and quantities.
+
+    Properties:
+    - ingredients: list of (quantity, ingredient) tuples the recipe calls for.
+    - yields_: number servings the recipe provides.
+    """
+
+    id: RecipeId
+    name: str
+    ingredients: list[tuple[float, Ingredient]]
+    yield_: int
+
+    def contains(self, ingredient: Ingredient | IngredientId) -> bool:
+        ingredient_id = (
+            ingredient if isinstance(ingredient, IngredientId) else ingredient.id
+        )
+        return any([i[1].id == ingredient_id for i in self.ingredients])
+
+    def macros_per_serving(self) -> MacroNutrients:
+        (total_carbohydrate, total_protein, total_fat) = 0.0, 0.0, 0.0
+        for weight, ingredient in self.ingredients:
+            carbohydrates, proteins, fats = ingredient.macronutrients
+            total_carbohydrate += weight * carbohydrates / 100
+            total_protein += weight * proteins / 100
+            total_fat += weight * fats / 100
+        return MacroNutrients(
+            total_carbohydrate / self.yield_,
+            total_protein / self.yield_,
+            total_fat / self.yield_,
+        )
+
+    def kilocalories_per_serving(self) -> float:
+        total_kilocalories = sum(w * i.kilocalories / 100 for w, i in self.ingredients)
+        return total_kilocalories / self.yield_
 
 
 @dataclass

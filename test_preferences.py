@@ -1,7 +1,8 @@
 import unittest
 
 from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPreferences
-from create_menu import Ingredient, IngredientId, Recipe, RecipeId, MacroNutrients
+from create_menu import Recipe
+from create_recipes import Ingredient, IngredientId, RecipeId, MacroNutrients
 
 
 test_ingredient = Ingredient(

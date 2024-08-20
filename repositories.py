@@ -1,7 +1,7 @@
 import json
 from typing import Any
 
-from create_menu import Ingredient, IngredientId, MacroNutrients, Recipe, RecipeId
+from create_recipes import Ingredient, IngredientId, MacroNutrients, Recipe, RecipeId, IngredientRepository, RecipeRepository
 
 
 def create_ingredient(ingredient_info: dict[str, Any]) -> Ingredient:
@@ -27,7 +27,7 @@ def create_recipe(recipe_info: dict[str, Any]) -> Recipe:
     )
 
 
-class InMemoryIngredientRepository:
+class InMemoryIngredientRepository(IngredientRepository):
     def __init__(self, ingredients: list[dict[str, Any]]):
         self.ingredients = {i["id"]: create_ingredient(i) for i in ingredients}
 
@@ -41,7 +41,7 @@ class InMemoryIngredientRepository:
         return self.ingredients.get(ingredient_id)
 
 
-class InMemoryRecipeRepository:
+class InMemoryRecipeRepository(RecipeRepository):
     def __init__(self, recipes: list[dict[str, Any]]):
         self.recipes = {i["id"]: create_recipe(i) for i in recipes}
 

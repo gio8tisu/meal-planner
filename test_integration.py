@@ -1,14 +1,10 @@
 import unittest
 
 from create_menu import (
-    create_menu_brute_force,
-    Ingredient,
-    IngredientId,
+    select_recipes_brute_force,
     Recipe,
-    RecipeId,
-    MacroNutrients,
 )
-from create_recipes import GetRecipeUseCase, CreateRecipeUseCase, RecipeDTO
+from create_recipes import GetRecipeUseCase, CreateRecipeUseCase, RecipeDTO, RecipeId, MacroNutrients, Ingredient, IngredientId
 from preferences import RestrictIngredient, MacroPreferences, KilocaloriesPreferences
 from repositories import InMemoryIngredientRepository, InMemoryRecipeRepository
 
@@ -84,13 +80,13 @@ hamburger_recipe = Recipe(
 
 class TestCreateMenuIntegration(unittest.TestCase):
     def test_create_menu_no_preferences(self):
-        create_menu_brute_force(
+        select_recipes_brute_force(
             [salad_recipe, chicken_sandwich_recipe, hamburger_recipe], 7
         )
 
     def test_create_menu_with_alergen(self):
         preference = RestrictIngredient(IngredientId("ground_beef"))
-        menu = create_menu_brute_force(
+        menu = select_recipes_brute_force(
             [hamburger_recipe, chicken_sandwich_recipe, salad_recipe], 7, preference
         )
 
@@ -98,7 +94,7 @@ class TestCreateMenuIntegration(unittest.TestCase):
 
     def test_create_menu_diet(self):
         preference = KilocaloriesPreferences(100)
-        menu = create_menu_brute_force(
+        menu = select_recipes_brute_force(
             [hamburger_recipe, chicken_sandwich_recipe, salad_recipe], 1, preference
         )
 
@@ -110,7 +106,7 @@ class TestCreateMenuIntegration(unittest.TestCase):
             proteins=2000,
             fats=100,
         )
-        menu = create_menu_brute_force(
+        menu = select_recipes_brute_force(
             [hamburger_recipe, salad_recipe, chicken_sandwich_recipe], 7, preference
         )
 
